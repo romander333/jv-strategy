@@ -1,28 +1,146 @@
-# jv-strategy
+# 🏡 Booking System — Accommodation Reservation App
+## 🔹 Вступ
+Цей проєкт став для мене цікавим і корисним досвідом.
+Ідея виникла після моєї останньої поїздки на відпочинок, де потрібно було бронювати місця через сторонню систему. Я подумав:
 
----
-Imagine you have a сhain of stores. You need to implement a discount system for people at some special events of the year like New Year.
+“А чому б не створити щось подібне самостійно?”
 
-In this task, we'll need help with the Strategy pattern.
-First of all, you need to create a `DiscountService` interface with the method `getDiscount()` with the return type `double`. 
-It must be located in the `core.basesyntax.strategy` package.
+Так і з’явилась ця система — з можливістю реєстрації користувачів, створення житла, бронювання, онлайн-оплати та керування статусами.
 
-You must create its implementations (with the same names) with such discounts:
+## 🔹 Використані технології
+Java 17
 
-| Implementation name |Discount |
-| :---: | :---: |
-| DefaultDiscountService| 0 |
-| NewYearDiscountService| 20 |
-| BirthdayDiscountService| 33 |
-| BlackFridayDiscountService| 45 |
+Spring Boot (Core framework)
 
-In each of these implementations in result of the execution of the method `getDiscount()` must return a discount according to the table above.
-Also, these implementations must be located in the `core.basesyntax.strategy.impl` package.
+Spring Security + JWT (автентифікація/авторизація)
 
-The last step will be the creation of a class called `DiscountStrategy` located in the `core.basesyntax` package. It must have method `getDiscountServiceBySpecialEvent(String specialEvent)` with return type `DiscountService` where `specialEvent` can have such values: `"Birthday"`, `"Black Friday"`, `"New Year"`.
+Spring Web (REST API)
 
-Using `specialEvent`, you must write code that defines the `DiscountService` implementation.
+Spring Data JPA + Hibernate
 
-In case the passed `specialEvent` doesn't have a specific implementation you must return `DefaultDiscountService` by default.
+Liquibase (для міграцій)
 
-#### [Try to avoid these common mistakes, while solving task](./checklist.md)
+Docker (контейнеризація)
+
+Stripe API (інтеграція онлайн-оплати)
+
+Telegram Bot API (повідомлення користувачам)
+
+Ngrok (для публічного доступу до локального webhook)
+
+MapStruct (для мапінгу DTO ↔ Entity)
+
+JUnit & Integration Tests (тестування)
+
+## 🔹 Основні функціональні можливості
+🔐 AuthController
+POST /register — реєстрація нового користувача
+
+POST /login — вхід у систему
+
+👤 UserController
+PUT /update-role — оновлення ролі користувача
+
+PUT /update-profile — редагування профілю
+
+🏠 AccommodationController
+POST /accommodation — створення житла
+
+GET /accommodations — перегляд усього житла
+
+GET /accommodation/{id} — перегляд одного житла
+
+PUT /accommodation/{id} — оновлення житла
+
+DELETE /accommodation/{id} — видалення
+
+📅 BookingController
+POST /booking — створення бронювання
+
+GET /bookings — перегляд броней за статусом
+
+GET /bookings/me — перегляд броней поточного користувача
+
+GET /booking/{id} — перегляд конкретної броні
+
+PUT /booking/{id} — оновлення бронювання
+
+PUT /booking/status/{id} — змінити статус
+
+DELETE /booking/{id} — видалити бронь
+
+💳 PaymentController
+POST /payment — створити оплату через Stripe
+
+Stripe webhook: автоматичне оновлення статусу після оплати
+
+## 🔹 Як запустити проект
+⚠️ Для коректного запуску потрібні:
+
+Docker
+
+Java 17
+
+MySql (або контейнер з ним)
+
+Ngrok акаунт (для webhook Stripe)
+
+🔧 Кроки:
+Клонувати репозиторій:
+
+bash
+Копіювати
+Редагувати
+git clone https://github.com/yourusername/booking-system.git
+cd booking-system
+Налаштувати .env або application.yml (API keys, DB, Stripe)
+
+Запустити Docker-компоненти:
+
+bash
+Копіювати
+Редагувати
+docker-compose up
+(Опційно) Запустити Ngrok:
+
+bash
+Копіювати
+Редагувати
+ngrok http 8080
+Перейти за URL і протестувати API (наприклад, через Postman)
+
+![Схема архітектури](images/first-architecture-diagram.png)
+![Схема архітектури](images/second-architecture-diagram.png)
+
+## 🔹 Важливі моменти та виклики
+Навчився інтегрувати Stripe API разом із webhook — це було вперше.
+
+Створив кастомну аутентифікацію з JWT.
+
+Використовував MapStruct для зручного мапінгу DTO ↔ Entity.
+
+Окрема увага — обробка ролей (admin/user), та безпечне оновлення профілю.
+
+Telegram-бот налаштовано на повідомлення адміну про нові бронювання (асинхронно через Executor).
+
+## 🔹 Postman Collection
+Колекція запитів доступна у папці postman/.
+Інструкція:
+
+Відкрити Postman
+
+Імпортувати файл
+
+Оновити {{baseUrl}} на актуальний (http://localhost:8080 або ngrok URL)
+
+## 🔹 Автор
+Ім’я Прізвище
+Telegram: @servetochka
+GitHub: github.com/yourusername
+
+## 🔹 Автор
+Цей проєкт — мій повноцінний досвід розробки бекенду з нуля.
+Мета — не просто зробити "чергову CRUD систему", а створити щось живе, з інтеграціями, безпекою, платежами та можливістю реального застосування.
+
+
+!1) файл із Postman and translate in English and 
