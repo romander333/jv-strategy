@@ -3,20 +3,16 @@ package core.basesyntax.multy;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Atomar {
-    static AtomicInteger atomicInteger = new AtomicInteger(0);
-
     public static void main(String[] args) throws InterruptedException {
-        for (int j = 0; j < 10_000; j++) {
-            new MyThread().start();
-        }
-        Thread.sleep(1_000);
-        System.out.println(atomicInteger.get());
+        MySecondThread myThread = new MySecondThread();
+        myThread.start();
+        System.out.println("thread main");
     }
+}
 
-    static class MyThread extends Thread {
-        @Override
-        public void run() {
-            atomicInteger.incrementAndGet();
-        }
+class MySecondThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("thread 1");
     }
 }

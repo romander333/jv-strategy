@@ -1,55 +1,50 @@
 package core.basesyntax.multy;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        Resource.i = 5;
-        MyThread myThread = new MyThread();
-        myThread.setName("One");
-        MyThread myThread2 = new MyThread();
-        myThread.start();
-        myThread2.start();
-        myThread.join();
-        myThread2.join();
-        System.out.println(Resource.i);
-    }
-}
-class MyThread extends Thread {
-    Resource resource;
 
-    @Override
-    public void run() {
-        Resource.changeStaticI();
-        new Resource().changeI();
-    }
-}
 
-class Resource {
-    static int i;
+    public static void main(String[] args) {
+        NameList list = new NameList();
+        list.add("First");
 
-    public synchronized static void changeStaticI() {
-        synchronized (Resource.class) {
-
-            int i = Resource.i;
-            if (Thread.currentThread().getName().equals("One")) {
-                Thread.yield();
+        class MyThread extends Thread {
+            @Override
+            public void run() {
+                System.out.println(list.removeFirst());
             }
-            i++;
-            Resource.i = i;
+        }
+        MyThread thread = new MyThread();
+        thread.setName("one");
+        thread.start();
+        new MyThread().start();
+
+    }
+
+    static class NameList {
+        private List<String> list = Collections.synchronizedList(new ArrayList<>());
+        public  synchronized void add(String name) {
+            list.add(name);
+        }
+
+        public synchronized String removeFirst() {
+            if (list.size() > 0) {
+                if (Thread.currentThread().getName().equals("one")) {
+                    Thread.yield();
+                }
+                return list.remove(0);
+            }
+            return null;
         }
     }
 
-
-    public synchronized void changeI() {
-        synchronized (this) {
-            int i = Resource.i;
-            if (Thread.currentThread().getName().equals("One")) {
-                Thread.yield();
-            }
-            i++;
-            Resource.i = i;
-        }
-    }
 }
+
+
+
 
 
 
